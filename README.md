@@ -1,6 +1,6 @@
-# Introduction to Database
+# Self Designed Ordering System
 
-This is the final project of the course Introduction to Database - ordering system
+This is the final project of the course Introduction to Database 
 
 ### How to start using the system
 - Clone this repository at local
