@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Welcome !</title>
+</head>
+
+<body>
+    <!-- <script>
+        let in_home = document.getElementById("home")
+    </script> -->
+
+    <script language="javascript">  
+        function showhidediv(id){  
+        var homePage=document.getElementById("home");  
+        var menuPage=document.getElementById("menu1"); 
+        var orderPage=document.getElementById("myOrder")
+        var shopOrderPage=document.getElementById("shopOrder")
+        var transactionRecordPage=document.getElementById("transactionRecord")
+        if (id == 'homePage') {  
+            if (homePage.style.display=='none') {  
+            menuPage.style.display='none';  
+            homePage.style.display='block'; 
+            orderPage.style.display='none';
+            shopOrderPage.style.display='none';
+            transactionRecordPage.style.display='none';
+           }  
+        } 
+        else if (id == 'menuPage') {  
+            if (menuPage.style.display=='none') {  
+            homePage.style.display='none';  
+            menuPage.style.display='block'; 
+            orderPage.style.display='none';
+            shopOrderPage.style.display='none';
+            transactionRecordPage.style.display='none';
+           }  
+        } 
+        else if (id == 'orderPage') {  
+            if (orderPage.style.display=='none') {  
+            homePage.style.display='none';  
+            menuPage.style.display='none'; 
+            orderPage.style.display='block';
+            shopOrderPage.style.display='none';
+           }  
+        } 
+        else if (id == 'shopOrderPage') {  
+            if (shopOrderPage.style.display=='none') {  
+            homePage.style.display='none';  
+            menuPage.style.display='none'; 
+            orderPage.style.display='none';
+            shopOrderPage.style.display='block';
+            transactionRecordPage.style.display='none';
+           }  
+        } 
+        else if (id == 'transactionRecordPage') {  
+            if (transactionRecordPage.style.display=='none') {  
+            homePage.style.display='none';  
+            menuPage.style.display='none'; 
+            orderPage.style.display='none';
+            shopOrderPage.style.display='none';
+            transactionRecordPage.style.display='block';
+           }  
+        } 
+        }  
+    </script> 
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand " href="#">Fooddoggy</a>
+            </div>
+            <form method="POST" action="{{ url_for('logout') }} "style=" margin-top: 8px; margin-left: 96%">
+                <input type="submit" value="Logout" class="btn btn-primary">
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="message" style="margin-top: 20px; margin-bottom: 20px;">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="active" onclick="showhidediv('homePage')"><a href="#home">Home</a></li>
+            <li><a href="#menu1" onclick="showhidediv('menuPage')">Shop</a></li>
+            <li><a href="#myOrder" onclick="showhidediv('orderPage')">My Order</a></li>
+            <li><a href="#shopOrder" onclick="showhidediv('shopOrderPage')">Shop Order</a></li>
+            <li><a href="#transactionRecord" onclick="showhidediv('transactionRecordPage')">Transaction Record</a></li>
+
+
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active" style="display:block;">
+            <!-- <div id="home" class="tab-pane fade in active"> -->
+                <h3>Profile</h3>
+                <div class="row">
+                    <div class="col-xs-12">
+                        Account: {{current_user.account}}, {{role}}, Name: {{current_user.username}}, PhoneNumber: {{current_user.phoneNumber}},  location: {{current_user.latitude}}, {{current_user.longitude}}
+                        <button type="button" style="margin-left: 5px;" class=" btn btn-info " data-toggle="modal" data-target="#location">edit location</button>
+                        <!--  -->
+                        <div class="modal fade" id="location"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog  modal-sm">
+                                <div class="modal-content">                                   
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">edit location</h4>
+                                    </div>
+                                    <form></form>
+                                    <form method="POST" action="{{ url_for('location_modify') }}">
+                                        <div class="modal-body">
+                                            <label class="control-label " for="latitude">latitude</label>
+                                            <input type="text" class="form-control" name="latitude" id="latitude" placeholder="enter latitude">
+                                            <br>
+                                            <label class="control-label " for="longitude">longitude</label>
+                                            <input type="text" class="form-control" name="longitude" id="longitude" placeholder="enter longitude">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" class="btn btn-default" value="Edit">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        walletbalance: {{current_user.value}}
+                        <!-- Modal -->
+                        <button type="button " style="margin-left: 5px;" class=" btn btn-info " data-toggle="modal" data-target="#myModal">Recharge</button>
+                        <div class="modal fade" id="myModal"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog  modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Recharge</h4>
+                                    </div>
+                                    <form method="POST" action="{{ url_for('recharge') }}">
+                                    <div class="modal-body">
+                                        <input type="text" class="form-control" name="recharge_value" id="recharge_value" placeholder="enter add value">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-default" value="Edit">Add</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3>Search</h3>
+                <div class=" row  col-xs-8">
+                    <form></form>
+                    <form method="POST" class="form-horizontal" action="{{ url_for('shop_search') }}" >
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="Shop" style="margin-top: 8px;">Shop</label>
+                            <div class="col-sm-5" style="margin-bottom: 10px;">
+                                <input type="text" class="form-control" name="shop-name" placeholder="Enter Shop name" style="margin-left: 10px; margin-top: 8px;">
+                            </div>
+                            <label class="control-label col-sm-1" for="distance" style="margin-top: 8px;">distance</label>
+                            <div class="col-sm-5"  style="margin-bottom: 10px;">
+                                <select class="form-control" name="distance" id="sel1" style="margin-left: 10px; margin-top: 8px;">
+                                    <option></option>
+                                    <option>near</option>
+                                    <option>medium </option>
+                                    <option>far</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="Price">Price</label>
+                            <div class="col-sm-2" style="margin-bottom: 10px;">
+                                <input type="text" name="lower-price" class="form-control" style="margin-left: 10px;">
+                            </div>
+                            <label class="control-label col-sm-1" for="~">~</label>
+                            <div class="col-sm-2" style="margin-bottom: 10px;">
+                                <input type="text" name="upper-price" class="form-control">
+                            </div>
+                            <label class="control-label col-sm-1" for="Meal">Meal</label>
+                            <div class="col-sm-5" style="margin-bottom: 10px;">
+                                <input type="text" list="Meals" class="form-control" name="meal" id="Meal" placeholder="Enter Meal" style="margin-left: 10px;">
+                                <datalist id="Meals">
+                                    <option value="Hamburger">
+                                    <option value="coffee">
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="category">Category</label>
+                            <div class="col-sm-5" style="margin-bottom: 10px;">
+                                <input type="text" list="categorys" class="form-control" name="shopCategory" id="category" placeholder="Enter shop category" style="margin-left: 10px;">
+                                <datalist id="categorys">
+                                    <option value="fast food">
+                                </datalist>
+                            </div>                    
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Search" style="margin-left: 18px;">
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="  col-xs-8">
+                        <form method="POST" action="{{ url_for('sorting_shop') }}">
+                        <label class="control-label col-sm-1.5" for="sorting" style="margin-top: 15px; margin-left: 10px;">sorting by</label>
+                        <select class="form-control" name="sort_type" id="sel_sorting" style="margin-left: 10px; margin-top: 8px; width: 20%;"for="sort_type">
+                            <option>Shop name</option>
+                            <option>Shop category </option>
+                            <option>Distance</option>
+                        </select>
+                        <select class="form-control" name="rev" id="sel_sorting" style="margin-left: 10px; margin-top: 8px; width: 20%;" for="rev">
+                            <option>increase</option>
+                            <option>decrease</option>
+                        </select>
+                            <div class=" col-xs-3">
+                                <input style=" margin-top: 10px;" type="submit" value="sorting" class="btn btn-primary">
+                            </div>
+                        </form>
+                        <table class="table" style=" margin-top: 15px;">
+                            <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">shop name</th>
+                                  <th scope="col">shop category</th>
+                                  <th scope="col">Distance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- <tr>
+                                    <th scope="row">1</th>                     
+                                    <td>macdonald</td>
+                                    <td>fast food</td>                        
+                                    <td>near </td>
+                                    <td>  <button type="button" class="btn btn-info " data-toggle="modal" data-target="#macdonald">Open menu</button></td>                  
+                                </tr> -->
+                                {% if shop_list is not none %}
+                                {% for shop in shop_list -%}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>                   
+                                    <td>{{ shop.shopName }}</td>
+                                    <td>{{ shop.shopCategory }}</td>                        
+                                    <td>{{ dist_list[shop._id] }}</td>
+                                    <td>  <button type="button" id="menu-button" class="btn btn-info " data-toggle="modal" data-target="#{{ shop._id }}">Open menu</button></td>                  
+                                </tr>
+                                {% endfor -%}
+                                {% endif %}
+                            </tbody>
+                        </table>
+
+                        <!-- Modal -->
+                        {% if shop_list is not none %}
+                        {% for shop in shop_list -%}
+                        <div class="modal fade" id="{{ shop._id }}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">menu</h4> 
+                                    </div>
+                                    <div class="modal-body">
+                                    <!--  -->            
+                                        <div class="row">
+                                            <div class="  col-xs-12">
+                                                <table class="table" style=" margin-top: 15px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Picture</th>                                 
+                                                            <th scope="col">meal name</th>                                
+                                                            <th scope="col">price</th>
+                                                            <th scope="col">Quantity</th>                                  
+                                                            <th scope="col">Order</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% if item_dict is not none -%}
+                                                        {% for item in item_dict[shop._id] -%}
+                                                        <input type="hidden" id="{{ loop.index }}" name="item-loop-{{ shop._id }}" />
+                                                        <tr>
+                                                            <th scope="row">{{ loop.index }}</th>
+                                                            <td><img src="data:image/jpeg;base64, {{ item.itemPicture.decode('utf-8') }}" width="50" height="50" alt= "{{ item.itemName }}" ></td>                                  
+                                                            <td>{{ item.itemName }}</td>
+                                                            <td>{{ item.itemPrice }} </td>
+                                                            <td>{{ item.itemRemain }} </td>              
+                                                            <!-- <td> <input type="checkbox" id="cbox{{ loop.index }}" value="{{ item.itemName }}" ></td> -->
+                                                            <td> <input type="number" name="quantity-{{item._id}}" value="0" min="0" max="{{ item.itemRemain }}" id="cbox{{ loop.index }}-{{shop._id}}" onfocus="this.blur()"/></td>
+                                                        </tr>
+                                                        {% endfor -%}  
+                                                        {% endif -%}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <select class="form-control" name="DeliveryType-{{ shop._id }}" id="sel_sorting" style="margin-left: 10px; margin-top: 5px; margin-bottom: 10px; width: 20%;" for="DeliveryType">
+                                                <option>Delivery</option>
+                                                <option>Pick-up</option>
+                                            </select>
+                                            <div class="modal-footer">
+                                                <button type="button" id="calc-btn-{{shop._id}}" name="calc-button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#CalculatePrice">Calculate the price</button>
+                                            </div>   
+                                        </div>                            
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+
+                        {% endfor -%}  
+                        {% endif -%}
+
+                    </div>
+                </div>
+                <div class="modal fade" id="CalculatePrice"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Order</h4> 
+                            </div>
+                            <div class="modal-body">
+                            <!--  -->
+                                <div class="row">
+                                    <div class="  col-xs-12">
+                                        <table class="table" style=" margin-top: 15px;">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Picture</th>                                 
+                                                    <th scope="col">meal name</th>                                
+                                                    <th scope="col">price</th>
+                                                    <th scope="col">Order Quantity</th>                                  
+                                                </tr>
+                                            </thead>
+                                            <tbody id="show-order">
+                                                <!-- for loop -->
+                                                <!-- end for -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div id="subtotal"></div>
+                                    <div id="deliver-fee"></div>
+                                    <div id="total"></div>
+                                    <button type="button" class="btn btn-default" name="make-order" style="margin-top: 15px;" data-dismiss="modal">Order</button>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+                <div class="post-paginate">
+                    {% if paginate is not none %}
+                    {% for page in paginate.iter_pages() %}
+                    {% if page %}
+                      {% if page != paginate.page %}
+                        <a href="{{ url_for('nav_home', page=page) }}">{{ page }}</a>
+                      {% else %}
+                        <strong>{{ page }}</strong>
+                      {% endif %}
+                    {% else %}
+                      <span class=ellipsis>…</span>
+                    {% endif %}
+                  {% endfor %}
+                  {% endif %}
+                </div>
+            </div>
+            <div id="menu1" class="tab-pane fade" style="display:none;">
+            <!-- <div id="menu1" class="tab-pane fade"> -->
+                <h3 > Start a business </h3>
+                <div class="form-group">
+                    {%- if shopkeeper is none -%}
+                    <div class="row">
+                        <form method="POST" action="{{ url_for('nav_shop')}}">
+                            <div class="col-xs-2">
+                                <label for="ex5">shop name</label>
+                                <input type="text" class="form-control" name="shopName" id="ex5" placeholder="macdonald" ><span id="info"></span>
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="ex5">shop category</label>
+                                <input type="text" class="form-control" name="shopCategory" id="ex5" placeholder="fast food">
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="ex6">latitude</label>
+                                <input type="text" class="form-control" name="latitude" id="ex6" placeholder="{{current_user.latitude}}">
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="ex8">longitude</label>
+                                <input type="text" class="form-control" name="longitude" id="ex8" placeholder="{{current_user.longitude}}">
+                            </div>
+                            <div class=" col-xs-3" style=" margin-top: 25px;">
+                                <input type="submit" value="register" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                    {%- else -%}
+                    <div class="row">
+                        <form>
+                            <div class="col-xs-2">
+                                <label for="ex5">shop name</label>
+                                <input type="text" class="form-control" name="shopName" id="ex5" disabled="true" placeholder="{{shopkeeper.shopName}}" ><span id="info"></span>
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="ex5">shop category</label>
+                                <input type="text" class="form-control" name="shopCategory" id="ex5" disabled="true" placeholder="{{shopkeeper.shopCategory}}">
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="ex6">latitude</label>
+                                <input type="text" class="form-control" name="latitude" id="ex6" disabled="true" placeholder="{{shopkeeper.latitude}}">
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="ex8">longitude</label>
+                                <input type="text" class="form-control" name="longitude" id="ex8" disabled="true" placeholder="{{shopkeeper.longitude}}">
+                            </div>
+                            <div class=" col-xs-3" style=" margin-top: 25px;">
+                                <input type="submit" value="register" class="btn btn-primary" disabled="true">
+                            </div>
+                        </form>
+                    </div>
+                    {%- endif -%}
+                </div>
+
+                <hr>
+
+                <h3>ADD</h3>
+                <form method="POST" action="/item_register" enctype="multipart/form-data">
+                    <div class="form-group ">
+                        <div class="row">
+                            <div class="col-xs-6">
+                            <label for="ex3">meal name</label>
+                            <input class="form-control" name="itemName" id="ex3" type="text">
+                            </div>
+                        </div>
+                        <div class="row" style=" margin-top: 15px;">
+                            <div class="col-xs-3">
+                                <label for="ex7">price</label>
+                                <input class="form-control" name="itemPrice" id="ex7" type="text">
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="ex4">quantity</label>
+                                <input class="form-control" name="itemRemain" id="ex4" type="text">
+                            </div>
+                        </div>
+                        <div class="row" style=" margin-top: 25px;">
+                            <div class=" col-xs-3">
+                                <label for="ex12">上傳圖片</label>
+                                <input id="myFile" type="file" name="itemPicture" multiple class="file-loading">
+                            </div>
+                        </div>
+                        <div class="row" style=" margin-top: 25px;">
+                            <div class=" col-xs-3">
+                                <input style=" margin-top: 15px;" type="submit" value="Add" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="  col-xs-8">
+                        <table class="table" style=" margin-top: 15px;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Picture</th>
+                                    <th scope="col">meal name</th>
+                                
+                                    <th scope="col">price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if shopkeeper_item_list is not none -%}
+                                {% for item in shopkeeper_item_list -%}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td><img src="data:image/jpeg;base64, {{ item.itemPicture.decode('utf-8') }}" width="50" height="50" alt="{{ item.itemName }}" ></td>
+                                    <td>{{ item.itemName }}</td>
+                                  
+                                    <td>{{ item.itemPrice }} </td>
+                                    <td>{{ item.itemRemain }} </td>
+                                    <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#{{ item.name }}-{{ item._id }}">
+                                    Edit
+                                    </button></td>
+                                  
+                                    <div class="modal fade" id="{{ item.name }}-{{ item._id }}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">{{ item.itemName }} Edit</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <form method="POST" action="{{url_for('item_modify')}}">
+                                                    <div class="modal-body">
+                                                        <div class="row" >                                                                                                                   
+                                                            <div class="col-xs-6">
+                                                                <label for="ex71">price</label>
+                                                                <input class="form-control" name="itemPrice" id="ex71" type="text">
+                                                            </div>
+                                                            <div class="col-xs-6">
+                                                                <label for="ex41">quantity</label>
+                                                                <input class="form-control" name="itemRemain" id="ex41" type="text">
+                                                            </div>
+                                                            <div class="hidden">
+                                                                <input type="hidden" name="item_id" value="{{item._id}}">
+                                                            </div>                                                                                                                    
+                                                        </div>                                   
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="submit" class="btn btn-secondary" value="Edit">                                       
+                                                    </div>
+                                                </form>  
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('item_delete')}}">
+                                            <input type="hidden" name="item_id" value="{{item._id}}">
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor -%}
+                                {% endif -%}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="myOrder" class="tab-pane fade" style="display:none;">
+                    <!-- <form method="POST" class="form-horizontal" action="{{ url_for('shop_search') }}" > -->
+                    <form method="POST" class="form-horizontal" action="">
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="orderStatus" style="margin-top: 8px;">Status</label>
+                            <div class="col-sm-5"  style="margin-bottom: 10px;">
+                                <select class="form-control" name="myOrder-filter" style="margin-left: 10px; margin-top: 8px;">
+                                    <option>All</option>
+                                    <option>Finished</option>
+                                    <option>Not Finished</option>
+                                    <option>Cancel</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <form method="POST" action="{{ url_for('userOrder_select_cancel') }}">
+                    <input type="submit" class="btn btn-danger" value="Cancel selected orders" name="multi_cancel">
+                    <!-- <button type="button" class="btn btn-danger">Cancel selected orders</button> -->
+                    <div class="row">
+                        <div class="  col-xs-10">
+                            <table class="table" style=" margin-top: 15px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Order ID</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Start</th>
+                                        <th scope="col">End</th>
+                                        <th scope="col">Shop name</th>
+                                        <th scope="col">Total Price</th>
+                                        <th scope="col">Order Details</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if user_order_list is not none -%}
+                                    {% for userOrder in user_order_list -%}
+                                    
+                                    <tr name="myOrder-list" id="myOrder-{{userOrder._id}}">
+                                        <th scope="row">
+                                            {% if userOrder.orderState == "Not Finished" -%}
+                                                <input type="checkbox" name="cbox-user-{{ userOrder._id }}" value="{{ userOrder._id }}">
+                                            {% else -%}
+                                                <input type="checkbox" name="cbox-user-{{ userOrder._id }}" value="{{ userOrder._id }}" disabled>
+                                            {% endif -%}
+                                            &emsp;{{ loop.index }}
+                                        </th>
+                                        <td>{{ userOrder.orderState }}</td>
+                                        <td>{{ userOrder.orderStart }}</td>                              
+                                        <td>{{ userOrder.orderEnd }}</td>
+                                        <td>{{ userOrder.shopName }}</td>
+                                        <td>{{ userOrder.orderPrice }}</td>
+                                        <td><button type="button" id="btn-{{userOrder._id}}" name="show-myOrder-detail" class="btn btn-info" data-toggle="modal" data-target="#order-detail">order details</button></td>
+                                        <td>
+                                            {% if userOrder.orderState == "Not Finished" -%}
+                                            <input type="submit" class="btn btn-danger" value="Cancel" name="{{userOrder._id}}" id="cancel-user-{{userOrder._id}}">
+                                            {% endif -%}
+                                        </td>
+                                    </tr>
+
+                                    {% endfor -%}
+                                    {% endif -%}
+                                </tbody>
+                            </table>
+                            
+                            <!-- {% if user_order_list is not none -%}
+                            {% for userOrder in user_order_list -%} -->
+                            <!-- modal for order detail -->
+                            <div class="modal fade" id="order-detail"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                        
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Order</h4> 
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <table class="table" style="margin-top: 15px;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Picture</th>
+                                                                <th scope="col">meal name</th>                                                                
+                                                                <th scope="col">price</th>
+                                                                <th scope="col">Order Quantity</th>                                  
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="myOrder-detail">
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div id="myOrder-subtotal"></div>
+                                                <div id="myOrder-deliver-fee"></div>
+                                                <div id="myOrder-total"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                              
+                                </div>
+                            </div>
+                            <!-- {% endfor -%}
+                            {% endif -%} -->
+                            
+                        </div>
+                    </div>
+                    </form>
+            </div>
+
+            <div id="shopOrder" class="tab-pane fade" style="display:none;">
+                <form method="POST" class="form-horizontal" action="">
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" for="orderStatus" style="margin-top: 8px;">Status</label>
+                        <div class="col-sm-5"  style="margin-bottom: 10px;">
+                            <select class="form-control" name="shopOrder-filter" style="margin-left: 10px; margin-top: 8px;">
+                                <option>All</option>
+                                <option>Finished</option>
+                                <option>Not Finished</option>
+                                <option>Cancel</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('shopOrder_update') }}">
+                <input type="submit" class="btn btn-success" value="Finish orders" name="multi_finish">
+                <input type="submit" class="btn btn-danger" value="Cancel orders" name="multi_cancel">
+                <div class="row">
+                    <div class="  col-xs-10">
+                        <table class="table" style=" margin-top: 15px;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Start</th>
+                                    <th scope="col">End</th>
+                                    <th scope="col">Shop name</th>
+                                    <th scope="col">Total Price</th>
+                                    <th scope="col">Order Details</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if shopkeeper_order_list is not none -%}
+                                {% for shopkeeperOrder in shopkeeper_order_list -%}
+                                <tr name="shopOrder-list" id="shopOrder-{{shopkeeperOrder._id}}">
+                                    <th scope="row">
+                                        {% if shopkeeperOrder.orderState == "Not Finished" -%}
+                                            <input type="checkbox" name="cbox-shop-{{ shopkeeperOrder._id }}" value="{{ shopkeeperOrder._id }}">
+                                        {% else -%}
+                                            <input type="checkbox" name="cbox-shop-{{ shopkeeperOrder._id }}" value="{{ shopkeeperOrder._id }}" disabled>
+                                        {% endif -%}
+                                        &emsp;{{ loop.index }}
+                                    </th>
+                                    <td>{{ shopkeeperOrder.orderState }}</td>
+                                    <td>{{ shopkeeperOrder.orderStart }}</td>                              
+                                    <td>{{ shopkeeperOrder.orderEnd }}</td>
+                                    <td>{{ shopkeeperOrder.shopName }}</td>
+                                    <td>{{ shopkeeperOrder.orderPrice }}</td>
+                                    <td><button type="button" id="btn-shop-{{shopkeeperOrder._id}}" name="show-shopOrder-detail" class="btn btn-info" data-toggle="modal" data-target="#shop-order-detail">order details</button></td>
+                                    <td>
+                                        {% if shopkeeperOrder.orderState == "Not Finished" -%}
+                                        <input type="submit" class="btn btn-success" value="Done" name="{{ shopkeeperOrder._id }}" id="done-shop-{{shopkeeperOrder._id}}">
+                                        {% endif -%}
+                                    </td>
+                                    <td>
+                                        {% if shopkeeperOrder.orderState == "Not Finished" -%}
+                                        <input type="submit" class="btn btn-danger" value="Cancel" name="{{ shopkeeperOrder._id }}" id="cancel-shop-{{shopkeeperOrder._id}}">
+                                        {% endif -%}
+                                    </td>
+                                </tr>
+                                {% endfor -%}
+                                {% endif -%}
+                            </tbody>
+                        </table>
+                                    
+                        <div class="modal fade" id="shop-order-detail"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                    
+                                <!-- Modal content-->
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Order</h4> 
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <table class="table" style="margin-top: 15px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Picture</th>
+                                                            <th scope="col">meal name</th>                                                                
+                                                            <th scope="col">price</th>
+                                                            <th scope="col">Order Quantity</th>                                  
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="shopOrder-detail">
+                                                    
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div id="shopOrder-subtotal"></div>
+                                            <div id="shopOrder-deliver-fee"></div>
+                                            <div id="shopOrder-total"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                          
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </form>
+            </div>
+
+            <div id="transactionRecord" class="tab-pane fade" style="display:none;">
+                <form method="POST" class="form-horizontal" action="">
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" for="orderStatus" style="margin-top: 8px;">Action</label>
+                        <div class="col-sm-5"  style="margin-bottom: 10px;">
+                            <select class="form-control" name="trans-filter" style="margin-left: 10px; margin-top: 8px;">
+                                <option>All</option>
+                                <option>Payment</option>
+                                <option>Receive</option>
+                                <option>Recharge</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="  col-xs-10">
+                        <table class="table" style=" margin-top: 15px;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Record ID</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Trader</th>
+                                    <th scope="col">Amount change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if transaction_list is not none -%}
+                                {% for transaction in transaction_list -%}
+                                <tr name="trans-list" id="trans-{{transaction._id}}">
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>{{ transaction.transactionType }}</td>                           
+                                    <td>{{ transaction.transactionTime }}</td>
+                                    <td>{{ transaction.transactionTrader }}</td>
+                                    <td>{{ transaction.moneyChange }}</td>
+                                </tr>
+                                {% endfor -%}
+                                {% endif -%}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+    <script>
+        $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+        });
+    </script>
+
+    <!-- for shop name ajax -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("input[name='shopName']").on('input', function() {
+                var shopName = $("input[name='shopName']").val()
+                $.ajax({
+                    async: false,
+                    url: '/shopname_registered',
+                    type: 'POST',
+                    data: JSON.stringify(shopName),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(msg){
+                        $('#info').html(msg)
+                    }
+                })
+            });
+        });
+    </script>
+
+    <!-- for calculating order -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#menu-button").on('click', function(){                
+                $("button[name='calc-button']").on('click', function(){
+                    var btn_id = $(this).attr('id')
+                    //alert(menu_open.length)
+                    //var len = menu_open.length;
+                    var shop_id = btn_id.substring(9);
+                    var item_num = $("input[name='item-loop-"+shop_id+"']").length;
+                    //var item_num = $("input[name='item-loop']").length;
+
+                    var deliver = $("select[name='DeliveryType-" + shop_id.toString() +"']").val();
+                    var item_order = {}
+
+                    for(var i = 1; i <= item_num; i++){
+                        var item_order_num = $("#cbox"+i.toString()+"-"+shop_id).val();
+                        var item_id = $("#cbox"+i.toString()+"-"+shop_id).attr('name').substring(9)
+                        item_order[item_id] = item_order_num;
+                    }
+                    
+                    var tmp_order = {
+                        //len: len,
+                        shop_id: shop_id,
+                        deliver: deliver,
+                        item_order: item_order
+                    }
+
+                    $.ajax({
+                        url: '/show_order',
+                        type: 'POST',
+                        data: JSON.stringify(tmp_order),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function(msg){
+                            //order = JSON.stringify(order)
+                            if (msg == "You didn't order anything !!" || msg == "Some items are no longer available or no enough remaining"){
+                                alert(msg)
+                                location.assign("http://127.0.0.1:5000/nav")
+                            }
+                            else {
+                                var msg_array = msg.split("   ")
+                                //alert(msg_array[0])
+                                $("#show-order").html(msg_array[0]);
+                                $("#subtotal").text("Subtotal: $" + msg_array[1]);
+                                $("#deliver-fee").text("Deliver fee: $" + msg_array[2]);
+                                var total = eval(msg_array[1] + "+" + msg_array[2])
+                                $("#total").text("Total Price: $" + total.toString())
+                            }
+                        }
+                    })
+                })
+            //})
+        });
+    </script>
+
+    <!-- for make order -->
+    <script type="text/javascript">
+        $(document).ready(function() {               
+            $("button[name='make-order']").on('click', function(){
+                
+                var order_item = $("#show-order").html()
+                var subtotal = $("#subtotal").html()
+                var deliver_fee = $("#deliver-fee").html()
+                var total = $("#total").html()
+
+                var order_detail = {
+                    order_item: order_item, 
+                    subtotal: subtotal,
+                    deliver_fee: deliver_fee,
+                    total: total
+                }
+
+                $.ajax({
+                    url: '/add_order',
+                    type: 'POST',
+                    data: JSON.stringify(order_detail),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(msg){
+                        if (msg != 'http://127.0.0.1:5000/nav') {
+                            alert(msg)
+                            location.assign('http://127.0.0.1:5000/nav')
+                        }
+                        else {
+                            location.assign(msg)
+                        }
+                    }
+                })
+            })
+        });
+    </script>
+
+    <!-- for my order detail -->
+    <script type="text/javascript">
+        $(document).ready(function() {               
+            $("button[name='show-myOrder-detail']").on('click', function(){
+                var btn_id = $(this).attr('id')                
+                var order_id = btn_id.substring(4)
+                //alert(order_id)
+                
+                $.ajax({
+                    url: '/order_detail',
+                    type: 'POST',
+                    data: JSON.stringify(order_id),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(msg){
+                        var msg_array = msg.split("   ")
+
+                        $("#myOrder-detail").html(msg_array[0])
+                        $("#myOrder-subtotal").text(msg_array[1])
+                        $("#myOrder-deliver-fee").text(msg_array[2])
+                        $("#myOrder-total").text(msg_array[3])
+                    }
+                })
+            })
+        });
+    </script>
+
+    <!-- for my shop order detail -->
+    <script type="text/javascript">
+        $(document).ready(function() {               
+            $("button[name='show-shopOrder-detail']").on('click', function(){
+                var btn_id = $(this).attr('id')                
+                var order_id = btn_id.substring(9)
+                //alert(order_id)
+                
+                $.ajax({
+                    url: '/order_detail',
+                    type: 'POST',
+                    data: JSON.stringify(order_id),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(msg){
+                        var msg_array = msg.split("   ")
+
+                        $("#shopOrder-detail").html(msg_array[0])
+                        $("#shopOrder-subtotal").text(msg_array[1])
+                        $("#shopOrder-deliver-fee").text(msg_array[2])
+                        $("#shopOrder-total").text(msg_array[3])
+                    }
+                })
+            })
+        });
+    </script>
+
+    <!-- my order filter -->
+    <script type="text/javascript">
+        $(document).ready(function() {               
+            $("select[name='myOrder-filter']").on('change', function(){
+                var option = $(this).val()  
+                //alert(option)
+                
+                var myOrder = document.getElementsByName("myOrder-list")
+
+                for(var i = 0; i < myOrder.length; i++){
+                    //alert(myOrder[i].children[1].textContent)
+                    var orderState = myOrder[i].children[1].textContent
+                    //alert(orderState)
+                    var id = myOrder[i].getAttribute('id')
+                    if(orderState != option && option != "All"){ 
+                        //alert(id)
+                        //alert(orderState)
+                        //alert(option)
+                        $("#"+id).hide()
+                    }else{
+                        $("#"+id).show()
+                    }
+                }
+            })
+        });
+    </script>
+    
+    <!-- shop order filter -->
+    <script type="text/javascript">
+        $(document).ready(function() {               
+            $("select[name='shopOrder-filter']").on('change', function(){
+                var option = $(this).val()  
+                
+                var shopOrder = document.getElementsByName("shopOrder-list")
+
+                for(var i = 0; i < shopOrder.length; i++){
+                    //alert(myOrder[i].children[1].textContent)
+                    var orderState = shopOrder[i].children[1].textContent
+                    //alert(orderState)
+                    var id = shopOrder[i].getAttribute('id')
+                    if(orderState != option && option != "All"){ 
+                        //alert(id)
+                        //alert(orderState)
+                        //alert(option)
+                        $("#"+id).hide()
+                    }else{
+                        $("#"+id).show()
+                    }
+                }
+            })
+        });
+    </script>
+
+    <!-- transaction filter -->
+    <script type="text/javascript">
+        $(document).ready(function() {               
+            $("select[name='trans-filter']").on('change', function(){
+                var option = $(this).val()  
+                
+                var shopOrder = document.getElementsByName("trans-list")
+
+                for(var i = 0; i < shopOrder.length; i++){
+                    //alert(myOrder[i].children[1].textContent)
+                    var orderState = shopOrder[i].children[1].textContent
+                    //alert(orderState)
+                    var id = shopOrder[i].getAttribute('id')
+                    if(orderState != option && option != "All"){ 
+                        //alert(id)
+                        //alert(orderState)
+                        //alert(option)
+                        $("#"+id).hide()
+                    }else{
+                        $("#"+id).show()
+                    }
+                }
+            })
+        });
+    </script>
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+  <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>
